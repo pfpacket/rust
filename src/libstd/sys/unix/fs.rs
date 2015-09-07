@@ -243,7 +243,7 @@ impl OpenOptions {
         self.mode = mode as mode_t;
     }
 
-    fn flag(&mut self, bit: c_int, on: bool) {
+    pub fn flag(&mut self, bit: c_int, on: bool) {
         if on {
             self.flags |= bit;
         } else {

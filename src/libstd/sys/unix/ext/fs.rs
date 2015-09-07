@@ -15,7 +15,7 @@
 use fs::{self, Permissions, OpenOptions};
 use io;
 use libc;
-use os::raw::c_long;
+use os::raw::{c_int, c_long};
 use os::unix::raw;
 use path::Path;
 use sys::fs::MetadataExt as UnixMetadataExt;
@@ -101,12 +101,20 @@ pub trait OpenOptionsExt {
     /// specified `mode` will be used as the permission bits for the new file.
     #[stable(feature = "fs_ext", since = "1.1.0")]
     fn mode(&mut self, mode: raw::mode_t) -> &mut Self;
+
+    /// Sets the flag bits that a file will be opened with.
+    #[unstable(feature = "fs_ext", reason = "recently added API")]
+    fn flags(&mut self, flags: c_int) -> &mut Self;
 }
 
 #[stable(feature = "fs_ext", since = "1.1.0")]
 impl OpenOptionsExt for OpenOptions {
     fn mode(&mut self, mode: raw::mode_t) -> &mut OpenOptions {
         self.as_inner_mut().mode(mode); self
+    }
+
+    fn flags(&mut self, flags: c_int) -> &mut OpenOptions {
+        self.as_inner_mut().flag(flags, true); self
     }
 }
 
